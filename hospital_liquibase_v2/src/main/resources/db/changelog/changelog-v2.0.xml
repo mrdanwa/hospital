@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2" author="danrui">
+        <createSequence sequenceName="historial_medico_sequence" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="vacuna_sequence" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="historial_medico">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="descripcion" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fecha" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="paciente_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="historial_medico"
+                                 baseColumnNames="paciente_id"
+                                 referencedTableName="paciente"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 constraintName="fk_paciente_historial"/>
+
+        <sql>ALTER TABLE historial_medico ALTER COLUMN id SET DEFAULT NEXTVAL('historial_medico_sequence');</sql>
+    </changeSet>
+
+    <changeSet id="3" author="danrui">
+        <createTable tableName="vacuna">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="vacuna" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fecha" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="paciente_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="vacuna"
+                                 baseColumnNames="paciente_id"
+                                 referencedTableName="paciente"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 constraintName="fk_paciente_vacuna"/>
+
+        <sql>ALTER TABLE vacuna ALTER COLUMN id SET DEFAULT NEXTVAL('vacuna_sequence');</sql>
+    </changeSet>
+
+</databaseChangeLog>
